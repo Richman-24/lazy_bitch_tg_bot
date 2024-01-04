@@ -10,7 +10,7 @@ from aiogram.types import Message, FSInputFile
 from aiogram.utils.markdown import hbold
 from aiogram.methods import DeleteWebhook
 
-from handlers import wine, difirent_types
+from handlers import difirent_types,  wine
 
 dp = Dispatcher()
 dp.include_routers(wine.router, difirent_types.router)
@@ -25,7 +25,7 @@ async def command_start_handler(message: Message) -> None:
 Это телеграм бот \"Ленивая Сучка\".\n
 Он может помочь тебе избавиться от некоторой рутины,\
 например поиска информации в АлкоБиблиотеке.
-Например попробуем /alcho_lib""")
+Например попробуем /wine""")
 
 
 #################################################################################
