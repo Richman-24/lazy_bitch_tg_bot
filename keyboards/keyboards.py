@@ -1,6 +1,6 @@
 from aiogram import types
 from aiogram.types import ReplyKeyboardMarkup
-from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 def tastes_keyboard() -> InlineKeyboardBuilder:
     builder = InlineKeyboardBuilder()
@@ -36,3 +36,10 @@ def type_of_wine() -> ReplyKeyboardMarkup:
         callback_data="fruit"))
     return kb
 
+def main_keyboards() -> ReplyKeyboardMarkup:
+    kb = [[types.KeyboardButton(text = "/wine")]]
+    keyboard = types.ReplyKeyboardMarkup(
+        keyboard=kb,
+        resize_keyboard=True,
+        input_field_placeholder="Чем могу вам помочь?")
+    return keyboard

@@ -1,10 +1,10 @@
 from aiogram import Router, F, types
 from aiogram.filters import Command
-from aiogram.types import FSInputFile, BufferedInputFile
+from aiogram.types import BufferedInputFile
 from aiogram.utils.media_group import MediaGroupBuilder
 
-from keyboards.wine_keyboards import tastes_keyboard, type_of_wine
-from database_commands import ask_data_base, image_from_bytes
+from keyboards.keyboards import tastes_keyboard, type_of_wine
+from database_commands import ask_data_base, draw_image
 
 flag = '>'
 router = Router()
@@ -39,17 +39,18 @@ async def cmd_taste(callback: types.CallbackQuery):
 @router.callback_query(F.data == 'champaign')
 @router.callback_query(F.data == 'fruit')
 async def cmd_album(callback: types.CallbackQuery):
+    type_vine = "Вкусное" if flag == ">" else "Невкусное"
     album_builder = MediaGroupBuilder(
-        caption="Общая подпись для будущего альбома")
+        caption=type_vine+" "+callback.data)
     try:
         for i in ask_data_base(callback.data, flag):
             album_builder.add(
                 type="photo",
-                media=BufferedInputFile(i[0], "image.jpeg"))
-            
-        await callback.message.answer_media_group(
+                media=BufferedInputFile(draw_image(i[0], i[1]), "image.jpeg"))    
+        if album_builder._media == []:
+            await callback.message.answer("Такого вина вы ещё не пивали.\n\n"+ type_vine+" "+callback.data)
+        else: 
+            await callback.message.answer_media_group(
             media=album_builder.build())
     except Exception as err:
         print("Ошибка в функции cmd_album",err)
-
-
