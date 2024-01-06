@@ -25,7 +25,7 @@ def draw_image(path: str, mark: int):
 def insert_blob_to_db(type_wine, title, mark, description, path_photo):
     """Вставляет данные в SQL"""
     try:
-        connection = sqlite3.connect('alcho_db.db')
+        connection = sqlite3.connect('AL_BD\\alcho_db.db')
         cursor = connection.cursor()
         print("Подключен к SQLite")
 
@@ -50,7 +50,7 @@ def insert_blob_to_db(type_wine, title, mark, description, path_photo):
 def ask_data_base(wine: str, flag: str):
     """Готовит список из БЛОБ фото по типу вина и оценке (переданных в функцию)"""
     try:
-        connection = sqlite3.connect('alcho_db.db')
+        connection = sqlite3.connect('AL_BD\\alcho_db.db')
         cursor = connection.cursor()
         print("Подключен к alcho_db")
         
