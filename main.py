@@ -10,11 +10,11 @@ from aiogram.types import Message
 from aiogram.utils.markdown import hbold
 from aiogram.methods import DeleteWebhook
 
-from handlers import difirent_types,  wine
+from handlers import difirent_types,  wine, ordering_food
 from keyboards.keyboards import main_keyboards
 
 dp = Dispatcher()
-dp.include_routers(wine.router, difirent_types.router)
+dp.include_routers(wine.router, difirent_types.router, ordering_food.router)
 
 @dp.message(Command("help"))
 @dp.message(CommandStart())

@@ -8,7 +8,8 @@ from database_commands import ask_data_base, draw_image
 
 flag = '>'
 router = Router()
-
+aviable_taste_wine = ('taste', 'not_taste')
+aviable_type_wine = ('red', 'white', 'pink', 'champaign', 'fruit')
 
 #кнопка /wine - запускает инлайн клавиатуру !Вкусное-невкусное
 @router.message(Command("wine"))
@@ -20,8 +21,7 @@ async def cmd_alcho_lib(message: types.Message):
 
 
 #Кнопка на инлайн ВКУСНОЕ|Невкусное, убирает старую инлайн и запускает новую с выбором типа вина
-@router.callback_query(F.data == "taste")
-@router.callback_query(F.data == "not_taste")
+@router.callback_query(F.data.in_(aviable_taste_wine))
 async def cmd_taste(callback: types.CallbackQuery):
     global flag
     flag = (">" if callback.data == 'taste' else "<")
@@ -33,11 +33,7 @@ async def cmd_taste(callback: types.CallbackQuery):
 
 
 #кнопка посылает тип вина, который потом вставляется в запрос к БД
-@router.callback_query(F.data == 'red')
-@router.callback_query(F.data == 'white')
-@router.callback_query(F.data == 'pink')
-@router.callback_query(F.data == 'champaign')
-@router.callback_query(F.data == 'fruit')
+@router.callback_query(F.data.in_(aviable_type_wine))
 async def cmd_album(callback: types.CallbackQuery):
     type_vine = "Вкусное" if flag == ">" else "Невкусное"
     album_builder = MediaGroupBuilder(
@@ -53,4 +49,4 @@ async def cmd_album(callback: types.CallbackQuery):
             await callback.message.answer_media_group(
             media=album_builder.build())
     except Exception as err:
-        print("Ошибка в функции cmd_album",err)
+        print("Ошибка в функции cmd_album:",err)

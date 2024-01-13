@@ -33,9 +33,9 @@ def convert_to_binary_data(filename):
 def insert_blob_to_db(type_wine, title, mark, description, path_photo):
     """Вставляет данные в SQL"""
     try:
-        connection = sqlite3.connect('AL_BD\\alcho_db.db')
+        connection = sqlite3.connect('database\\alcho_db.db')
         cursor = connection.cursor()
-        print("Подключен к SQLite")
+        #print("Подключен к SQLite")
 
         insert_query = """INSERT INTO wine_db (type_wine, title, mark, description, photo)
                           VALUES(?, ?, ?, ?, ?)"""
@@ -44,32 +44,32 @@ def insert_blob_to_db(type_wine, title, mark, description, path_photo):
         data_tuple = (type_wine, title, mark, description, photo)
         cursor.execute(insert_query, data_tuple)
         connection.commit()
-        print("Изображение и файл успешно вставлены как BLOB в таблицу")
+        #print("Изображение и файл успешно вставлены как BLOB в таблицу")
         cursor.close()
 
     except sqlite3.Error as error:
-        print("Ошибка при работе с SQLite", error)
+        print("Ошибка при работе с SQLite - insert_blob_to_db", error)
     finally:
         if connection:
             connection.close()
-            print("Соединение с SQLite закрыто")
+            #print("Соединение с SQLite закрыто")
 
 def ask_data_base(wine: str, flag: str):
     """Готовит список из БЛОБ фото по типу вина и оценке (переданных в функцию) и рисует через PIL оценку"""
     try:
-        connection = sqlite3.connect('AL_BD\\alcho_db.db')
+        connection = sqlite3.connect('database\\alcho_db.db')
         cursor = connection.cursor()
-        print("Подключен к alcho_db")
+        #print("Подключен к alcho_db")
         
         data = list(cursor.execute('SELECT photo, mark FROM wine_db WHERE type_wine == "{}" AND mark {} 5 ORDER BY mark'.format(wine, flag)))
-        print("Выполнен запрос")
+        print("Выполнен запрос к SQL /Wine")
 
         return data
 
 
     except sqlite3.Error as error:
-        print("Ошибка при работе с SQLite", error)
+        print("Ошибка при работе с SQLite - ask_data_base", error)
     finally:
         if connection:
             connection.close()
-            print("Соединение с SQLite закрыто")
+            #print("Соединение с SQLite закрыто")
