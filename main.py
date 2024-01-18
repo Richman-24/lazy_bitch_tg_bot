@@ -10,7 +10,7 @@ from aiogram.types import Message
 from aiogram.utils.markdown import hbold
 from aiogram.methods import DeleteWebhook
 
-from handlers import difirent_types,  wine, ordering_food
+from handlers import difirent_types,  ordering_food, wine
 from keyboards.keyboards import main_keyboards
 
 dp = Dispatcher()

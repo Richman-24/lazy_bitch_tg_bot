@@ -6,35 +6,41 @@ def tastes_keyboard() -> InlineKeyboardBuilder:
     builder = InlineKeyboardBuilder()
     builder.add(types.InlineKeyboardButton(
         text="Вкусное",
-        callback_data="taste"),
+        callback_data="Вкусное"),
         types.InlineKeyboardButton(
-        text="Не вкусное",
-        callback_data="not_taste")
+        text="Невкусное",
+        callback_data="Невкусное")
     )
     return builder
 
 def type_of_wine() -> ReplyKeyboardMarkup:
     kb = InlineKeyboardBuilder()
-    kb.add(types.InlineKeyboardButton(
+    kb.row(types.InlineKeyboardButton(
         text="Красное",
-        callback_data="red"),
+        callback_data="красное"),
 
         types.InlineKeyboardButton(
         text="Белое",
-        callback_data="white"),
+        callback_data="белое"))
 
-        types.InlineKeyboardButton(
+    kb.row(types.InlineKeyboardButton(
         text="Розовое",
-        callback_data="pink"),
+        callback_data="розовое"),
 
         types.InlineKeyboardButton(
         text="Игристое",
-        callback_data="champaign"),
+        callback_data="игристое"),
 
         types.InlineKeyboardButton(
         text="Фруктовое",
-        callback_data="fruit"))
+        callback_data="фруктовое"))
     return kb
+
+#def type_of_wine() -> ReplyKeyboardMarkup:
+#    kb = ReplyKeyboardMarkup.row()
+
+
+
 
 def main_keyboards() -> ReplyKeyboardMarkup:
     kb = [[types.KeyboardButton(text = "/wine")], [types.KeyboardButton(text = "/food")]]

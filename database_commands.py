@@ -2,6 +2,9 @@ from PIL import Image, ImageDraw, ImageFont
 import sqlite3
 import io
 
+flag_dict = {"Вкусное": ">", "Невкусное": "<"}
+type_dict = {"красное":"red", "белое":"white", "розовое":"pink", "игристое":"champaign", "фруктовое":"fruit"}
+
 def draw_image(photo: str, mark: int):
     """Функция берёт картинку и оценку, рисует оценку на картинке и возвращает 
     в BLOB формате для записи в БД"""
@@ -61,7 +64,7 @@ def ask_data_base(wine: str, flag: str):
         cursor = connection.cursor()
         #print("Подключен к alcho_db")
         
-        data = list(cursor.execute('SELECT photo, mark FROM wine_db WHERE type_wine == "{}" AND mark {} 5 ORDER BY mark'.format(wine, flag)))
+        data = list(cursor.execute('SELECT photo, mark FROM wine_db WHERE type_wine == "{}" AND mark {} 5 ORDER BY mark'.format(type_dict[wine], flag_dict[flag])))
         print("Выполнен запрос к SQL /Wine")
 
         return data
