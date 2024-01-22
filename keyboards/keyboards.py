@@ -1,13 +1,12 @@
-from aiogram import types
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 def tastes_keyboard() -> InlineKeyboardBuilder:
     builder = InlineKeyboardBuilder()
-    builder.add(types.InlineKeyboardButton(
+    builder.add(InlineKeyboardButton(
         text="Вкусное",
         callback_data="Вкусное"),
-        types.InlineKeyboardButton(
+        InlineKeyboardButton(
         text="Невкусное",
         callback_data="Невкусное")
     )
@@ -15,23 +14,23 @@ def tastes_keyboard() -> InlineKeyboardBuilder:
 
 def type_of_wine() -> ReplyKeyboardMarkup:
     kb = InlineKeyboardBuilder()
-    kb.row(types.InlineKeyboardButton(
+    kb.row(InlineKeyboardButton(
         text="Красное",
         callback_data="красное"),
 
-        types.InlineKeyboardButton(
+        InlineKeyboardButton(
         text="Белое",
         callback_data="белое"))
 
-    kb.row(types.InlineKeyboardButton(
+    kb.row(InlineKeyboardButton(
         text="Розовое",
         callback_data="розовое"),
 
-        types.InlineKeyboardButton(
+        InlineKeyboardButton(
         text="Игристое",
         callback_data="игристое"),
 
-        types.InlineKeyboardButton(
+        InlineKeyboardButton(
         text="Фруктовое",
         callback_data="фруктовое"))
     return kb
@@ -40,11 +39,25 @@ def type_of_wine() -> ReplyKeyboardMarkup:
 #    kb = ReplyKeyboardMarkup.row()
 
 
-
-
 def main_keyboards() -> ReplyKeyboardMarkup:
-    kb = [[types.KeyboardButton(text = "/wine")], [types.KeyboardButton(text = "/food")]]
-    keyboard = types.ReplyKeyboardMarkup(
+    kb = [[KeyboardButton(text = "/wine")], [KeyboardButton(text = "/food")]]
+    keyboard = ReplyKeyboardMarkup(
+        keyboard=kb,
+        resize_keyboard=True,
+        input_field_placeholder="Чем могу вам помочь?")
+    return keyboard
+
+def admin_main_keyboard() -> ReplyKeyboardMarkup:
+    kb = [[KeyboardButton(text = "/wine")], [KeyboardButton(text = "/food")], [KeyboardButton(text = "/admin_pannel")]]
+    keyboard = ReplyKeyboardMarkup(
+        keyboard=kb,
+        resize_keyboard=True,
+        input_field_placeholder="Чем могу вам помочь?")
+    return keyboard
+
+def admin_pannel() -> ReplyKeyboardMarkup:
+    kb = [[KeyboardButton(text = "Добавить вино")]]
+    keyboard = ReplyKeyboardMarkup(
         keyboard=kb,
         resize_keyboard=True,
         input_field_placeholder="Чем могу вам помочь?")

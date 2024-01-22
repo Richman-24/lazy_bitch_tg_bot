@@ -1,4 +1,4 @@
 venv/
 **/__pycache__/
-**/AL_BD
-database/
+database/alcho_db.db
+config.py

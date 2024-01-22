@@ -7,14 +7,14 @@ from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message
-from aiogram.utils.markdown import hbold
 from aiogram.methods import DeleteWebhook
 
-from handlers import difirent_types,  ordering_food, wine
-from keyboards.keyboards import main_keyboards
+from handlers import difirent_types,  ordering_food, wine, admin
+from keyboards.keyboards import main_keyboards, admin_main_keyboard
+import config
 
 dp = Dispatcher()
-dp.include_routers(wine.router, difirent_types.router, ordering_food.router)
+dp.include_routers(wine.router, difirent_types.router, ordering_food.router, admin.router)
 
 @dp.message(Command("help"))
 @dp.message(CommandStart())
@@ -23,12 +23,15 @@ async def command_start_handler(message: Message) -> None:
     This handler receives messages with `/start` and '/help' command
     """
     
-    await message.answer(f"""Приветствую, {hbold(message.from_user.full_name)}!\n
+    await message.answer(f"""Приветствую, {message.from_user.full_name}!\n
 Это телеграм бот \"Ленивая Сучка\".\n
 Он может помочь тебе избавиться от некоторой рутины,\
 например поиска информации в АлкоБиблиотеке.
 Например попробуем /wine""",
-reply_markup=main_keyboards())
+reply_markup=admin_main_keyboard())
+    #if message.from_user.id == config.ADMIN_ID:
+    #    await message.answer("Вы авторизовались как Админ",
+    #                         reply_markup=admin_main_keyboard)
 #################################################################################
 async def main() -> None:
 
