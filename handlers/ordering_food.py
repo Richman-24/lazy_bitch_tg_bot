@@ -6,8 +6,11 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, ReplyKeyboardRemove
 
 from keyboards.keyboards import make_row_keyboard
+from config import AVIALABLE_USERS
 
 router = Router()
+router.message.filter(F.from_user.id.in_(AVIALABLE_USERS))
+router.callback_query.filter(F.from_user.id.in_(AVIALABLE_USERS))
 
 # Эти значения далее будут подставляться в итоговый текст, отсюда
 # такая на первый взгляд странная форма прилагательных

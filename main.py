@@ -10,10 +10,11 @@ from aiogram.types import Message
 from aiogram.methods import DeleteWebhook
 
 from handlers import difirent_types,  ordering_food, wine, admin
-from keyboards.keyboards import main_keyboards, admin_main_keyboard
+from keyboards.keyboards import main_keyboards
 import config
 
 dp = Dispatcher()
+
 dp.include_routers(wine.router, difirent_types.router, ordering_food.router, admin.router)
 
 @dp.message(Command("help"))
@@ -22,17 +23,18 @@ async def command_start_handler(message: Message) -> None:
     """
     This handler receives messages with `/start` and '/help' command
     """
-    
-    await message.answer(f"""Приветствую, {message.from_user.full_name}!\n
+    if message.from_user.id == int(config.ADMIN_ID):
+        await message.answer("Вы авторизовались как Админ:\n /wine - Вино\n /food - Еда\n /admin_pannel - Панель администратора")
+    else: 
+        await message.answer(f"""Приветствую, {message.from_user.full_name}!\n
+
 Это телеграм бот \"Ленивая Сучка\".\n
 Он может помочь тебе избавиться от некоторой рутины,\
 например поиска информации в АлкоБиблиотеке.
 Например попробуем /wine""",
-reply_markup=admin_main_keyboard())
-    #if message.from_user.id == config.ADMIN_ID:
-    #    await message.answer("Вы авторизовались как Админ",
-    #                         reply_markup=admin_main_keyboard)
-#################################################################################
+reply_markup=main_keyboards())
+        
+################################################################################# #
 async def main() -> None:
 
     bot = Bot(getenv("TOKEN"), parse_mode=ParseMode.HTML)
@@ -43,3 +45,11 @@ async def main() -> None:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)
     asyncio.run(main())
+
+
+@dp.message()
+async def other_ans(message: Message) -> None:
+    await message.answer(f" Ваш ID: {message.from_user.id}\n\
+Извините, вероятно вы не авторизованный пользователь.\n\
+Обратитесь к администратору для авторизации")
+    

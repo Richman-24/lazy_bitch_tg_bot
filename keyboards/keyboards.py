@@ -32,7 +32,8 @@ def type_of_wine() -> ReplyKeyboardMarkup:
 
         InlineKeyboardButton(
         text="Фруктовое",
-        callback_data="фруктовое"))
+        callback_data="фруктовое")
+        )
     return kb
 
 #def type_of_wine() -> ReplyKeyboardMarkup:
@@ -47,14 +48,6 @@ def main_keyboards() -> ReplyKeyboardMarkup:
         input_field_placeholder="Чем могу вам помочь?")
     return keyboard
 
-def admin_main_keyboard() -> ReplyKeyboardMarkup:
-    kb = [[KeyboardButton(text = "/wine")], [KeyboardButton(text = "/food")], [KeyboardButton(text = "/admin_pannel")]]
-    keyboard = ReplyKeyboardMarkup(
-        keyboard=kb,
-        resize_keyboard=True,
-        input_field_placeholder="Чем могу вам помочь?")
-    return keyboard
-
 def admin_pannel() -> ReplyKeyboardMarkup:
     kb = [[KeyboardButton(text = "Добавить вино")]]
     keyboard = ReplyKeyboardMarkup(
@@ -62,6 +55,14 @@ def admin_pannel() -> ReplyKeyboardMarkup:
         resize_keyboard=True,
         input_field_placeholder="Чем могу вам помочь?")
     return keyboard
+
+def wine_name_keyboard() -> InlineKeyboardBuilder:
+    builder = InlineKeyboardBuilder()
+    builder.add(InlineKeyboardButton(
+        text="Запомнить имя",
+        callback_data="set_name")
+    )
+    return builder
 
 def make_row_keyboard(items: list[str]) -> ReplyKeyboardMarkup:
     """

@@ -7,12 +7,13 @@ from aiogram.utils.media_group import MediaGroupBuilder
 
 from keyboards.keyboards import tastes_keyboard, type_of_wine
 from database.database_commands import ask_data_base, draw_image
-
+from config import AVIALABLE_USERS, aviable_taste_wine, aviable_type_wine
 
 router = Router()
+router.message.filter(F.from_user.id.in_(AVIALABLE_USERS))
+router.callback_query.filter(F.from_user.id.in_(AVIALABLE_USERS))
 
-aviable_taste_wine = ('Вкусное', 'Невкусное')
-aviable_type_wine = ('красное', 'белое', 'розовое', 'игристое', 'фруктовое')
+
 
 class Wine(StatesGroup):
     choosing_wine_mark = State()
