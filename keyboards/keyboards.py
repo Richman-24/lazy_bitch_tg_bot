@@ -49,18 +49,23 @@ def main_keyboards() -> ReplyKeyboardMarkup:
     return keyboard
 
 def admin_pannel() -> ReplyKeyboardMarkup:
-    kb = [[KeyboardButton(text = "Добавить вино")]]
+    kb = [[KeyboardButton(text = "/add_wine")]]
     keyboard = ReplyKeyboardMarkup(
         keyboard=kb,
         resize_keyboard=True,
         input_field_placeholder="Чем могу вам помочь?")
     return keyboard
 
-def wine_name_keyboard() -> InlineKeyboardBuilder:
+def add_wine_confirm() -> InlineKeyboardBuilder:
     builder = InlineKeyboardBuilder()
-    builder.add(InlineKeyboardButton(
-        text="Запомнить имя",
-        callback_data="set_name")
+    builder.add(
+        InlineKeyboardButton(
+        text="Добавить",
+        callback_data="all_right"),
+
+        InlineKeyboardButton(
+        text="Отмена",
+        callback_data="cancel")
     )
     return builder
 

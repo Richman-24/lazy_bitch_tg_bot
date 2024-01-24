@@ -5,6 +5,9 @@ import io
 flag_dict = {"Вкусное": ">", "Невкусное": "<"}
 type_dict = {"красное":"red", "белое":"white", "розовое":"pink", "игристое":"champaign", "фруктовое":"fruit"}
 
+def resave_photo(photo): #байты IO
+    ...
+
 def draw_image(photo: str, mark: int):
     """Функция берёт картинку и оценку, рисует оценку на картинке и возвращает 
     в BLOB формате для записи в БД"""
@@ -22,18 +25,18 @@ def draw_image(photo: str, mark: int):
     
     
     data = io.BytesIO() #Используем io.BytesIO() как временное хранилище картинки, чтобы не сохранять на диск
-    im.save(data, format='jpeg') #Сохраняем в локальном хранилище, в формате jpeg
+    im.save(data, format='jpeg') #Сохраняем во временном хранилище, в формате jpeg
     return data.getvalue() #Получаем байтовый поток изображения
 
 
-def convert_to_binary_data(filename):
+"""def convert_to_binary_data(filename):
     # Преобразование данных в двоичный формат
     with open(filename, 'rb') as file:
         blob_data = file.read()
     return blob_data
 
-
-def insert_blob_to_db(type_wine, title, mark, description, path_photo):
+"""
+def insert_blob_to_db(type_wine, title, mark, description, photo):
     """Вставляет данные в SQL"""
     try:
         connection = sqlite3.connect('database\\alcho_db.db')
@@ -42,7 +45,7 @@ def insert_blob_to_db(type_wine, title, mark, description, path_photo):
 
         insert_query = """INSERT INTO wine_db (type_wine, title, mark, description, photo)
                           VALUES(?, ?, ?, ?, ?)"""
-        photo = convert_to_binary_data(path_photo)
+        #photo = convert_to_binary_data(path_photo)
         # Преобразование данных в формат кортежа
         data_tuple = (type_wine, title, mark, description, photo)
         cursor.execute(insert_query, data_tuple)
