@@ -6,8 +6,9 @@ from aiogram.types import BufferedInputFile, CallbackQuery, Message
 from aiogram.utils.media_group import MediaGroupBuilder
 
 from keyboards.keyboards import tastes_keyboard, type_of_wine
-from database.database_commands import ask_data_base, draw_image
-from config import AVIALABLE_USERS, aviable_taste_wine, aviable_type_wine
+from database.db import ask_data_base, draw_image
+from config import AVIALABLE_USERS
+from states import Wine,  aviable_taste_wine, aviable_type_wine
 
 router = Router()
 router.message.filter(F.from_user.id.in_(AVIALABLE_USERS))
@@ -15,9 +16,7 @@ router.callback_query.filter(F.from_user.id.in_(AVIALABLE_USERS))
 
 
 
-class Wine(StatesGroup):
-    choosing_wine_mark = State()
-    choosing_wine_type = State()
+
 
 #кнопка /wine - запускает инлайн клавиатуру !Вкусное-невкусное
 @router.message(Command("wine"))
@@ -52,18 +51,33 @@ async def mark_chosen_incorrectly(callback: CallbackQuery):
 @router.callback_query(Wine.choosing_wine_type, F.data.in_(aviable_type_wine))
 async def cmd_album(callback: CallbackQuery, state: FSMContext):
     user_data = await state.get_data()
-    album_builder = MediaGroupBuilder(
-        caption=user_data["chosen_mark"]+" "+callback.data)
     try:
-        for i in ask_data_base(callback.data, user_data["chosen_mark"]):
-            album_builder.add(
-                type="photo",
-                media=BufferedInputFile(draw_image(i[0], i[1]), "image.jpeg"))    
-        if album_builder._media == []:
+        data = ask_data_base(callback.data, user_data["chosen_mark"])
+        if data:
+            cnt = 0
+            album_builder = MediaGroupBuilder(
+                    caption=user_data["chosen_mark"]+" "+callback.data)
+            for i in data:
+                album_builder.add(
+                        type="photo",
+                        media=BufferedInputFile(draw_image(i[0], i[1]), "image.jpeg"))
+                cnt +=1
+                if cnt < 10: #контролирует, чтобы не посадить больше, чем есть мест
+                    pass
+                else: 
+                    await callback.message.answer_media_group(
+                        media=album_builder.build())
+                    album_builder = MediaGroupBuilder(
+                        caption=user_data["chosen_mark"]+" "+callback.data)
+                    cnt = 0            
+            try:
+                await callback.message.answer_media_group(
+                        media=album_builder.build())
+            except Exception as err: 
+                print(f"Ошибка в cmd_album - пустой альбом", err)
+        else:
             await callback.message.answer("Такого вина вы ещё не пивали.\n\n{} {}.".format(user_data["chosen_mark"], callback.data))
-        else: 
-            await callback.message.answer_media_group(
-            media=album_builder.build())
+
     except Exception as err:
         print("Ошибка в функции cmd_album:",err)
     finally:

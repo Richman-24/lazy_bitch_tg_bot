@@ -5,8 +5,6 @@ import io
 flag_dict = {"Вкусное": ">", "Невкусное": "<"}
 type_dict = {"красное":"red", "белое":"white", "розовое":"pink", "игристое":"champaign", "фруктовое":"fruit"}
 
-def resave_photo(photo): #байты IO
-    ...
 
 def draw_image(photo: str, mark: int):
     """Функция берёт картинку и оценку, рисует оценку на картинке и возвращает 

@@ -2,11 +2,12 @@
 from aiogram import Router, F
 from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
-from aiogram.fsm.state import StatesGroup, State
+
 from aiogram.types import Message, ReplyKeyboardRemove
 
 from keyboards.keyboards import make_row_keyboard
 from config import AVIALABLE_USERS
+from states import OrderFood
 
 router = Router()
 router.message.filter(F.from_user.id.in_(AVIALABLE_USERS))
@@ -18,15 +19,13 @@ available_food_names = ["Суши", "Спагетти", "Хачапури"]
 available_food_sizes = ["Маленькую", "Среднюю", "Большую"]
 
 
-class OrderFood(StatesGroup):
-    choosing_food_name = State()
-    choosing_food_size = State()
+
 
 
 @router.message(Command("food"))
 async def cmd_food(message: Message, state: FSMContext):
     await message.answer(
-        text="Выберите блюдо:",
+        text="ЗАГОТОВКА ПОД ПАРСИНГ ЕДАЛЕН:\n Выберите блюдо:",
         reply_markup=make_row_keyboard(available_food_names)
     )
     # Устанавливаем пользователю состояние "выбирает название"

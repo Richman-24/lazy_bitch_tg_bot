@@ -2,27 +2,22 @@ from aiogram import Router, F, Bot
 from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
-from aiogram.types import BufferedInputFile, CallbackQuery, Message
+from aiogram.types import BufferedInputFile, CallbackQuery, Message, ReplyKeyboardRemove
 
 from keyboards.keyboards import admin_pannel, type_of_wine, add_wine_confirm
-from database.database_commands import insert_blob_to_db, type_dict
-from config import ADMIN_ID, aviable_type_wine, AVIALABLE_USERS
+from database.db import insert_blob_to_db, type_dict
+from config import ADMIN_ID, AVIALABLE_USERS
+from states import Admin, aviable_type_wine 
 import io
 
 router = Router()
 router.message.filter(F.from_user.id == int(ADMIN_ID))
 
-class Admin(StatesGroup):
-    type_of = State()
-    name = State()
-    desc = State()
-    mark = State()
-    photo = State()
+
 
 @router.message(Command("admin_pannel"))
 async def cmd_admin(message: Message):
     await message.answer("Что будем делать?", reply_markup=admin_pannel())
-
 
 @router.message(Command("add_wine"))
 async def cmd_add_wine(message: Message, state: FSMContext):
@@ -37,8 +32,7 @@ async def cmd_type(callback: CallbackQuery, state: FSMContext):
     await state.update_data(type_of = callback.data)
     await state.set_state(Admin.name)
     await callback.message.answer(
-        "Добавьте параметры вина:\nВведите название:\n *....")
-    await callback.message.delete()
+        "Добавьте параметры вина:\nВведите название:\n *....", reply_markup = ReplyKeyboardRemove())
 
 #Если пользователь введёт не красное\белое и т.д.)
 @router.callback_query(StateFilter("Admin.wine_type")) 
@@ -55,7 +49,7 @@ async def cmd_name(message: Message, state: FSMContext):
     await state.set_state(Admin.desc)
     await message.answer(
         "Добавьте параметры вина:\n Введите описание вина\n  **...")
-    await message.delete()
+
 
 @router.message(Admin.desc, F.text)
 async def cmd_desc(message: Message, state: FSMContext):
@@ -63,8 +57,8 @@ async def cmd_desc(message: Message, state: FSMContext):
     await state.set_state(Admin.mark)
     await message.answer(
         "Добавьте параметры вина:\n Введите оценку вина (1-10)\n  ***..")
-    await message.delete()
-    
+
+
 @router.message(Admin.mark, F.text)
 async def cmd_mark(message: Message, state: FSMContext):
     await state.update_data(mark = int(message.text))

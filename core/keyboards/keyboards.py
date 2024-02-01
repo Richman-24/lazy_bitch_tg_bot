@@ -36,10 +36,6 @@ def type_of_wine() -> ReplyKeyboardMarkup:
         )
     return kb
 
-#def type_of_wine() -> ReplyKeyboardMarkup:
-#    kb = ReplyKeyboardMarkup.row()
-
-
 def main_keyboards() -> ReplyKeyboardMarkup:
     kb = [[KeyboardButton(text = "/wine")], [KeyboardButton(text = "/food")]]
     keyboard = ReplyKeyboardMarkup(
