@@ -1,4 +1,5 @@
-# lazy_bitch_tg_bot
+# BAR tg-bot asistant 
+
 This is bot  - personal helper to control some quite routine tasks of life.
 
 I have some problems with alcohol asortiment in the shop. It's just huge. I tried to make
